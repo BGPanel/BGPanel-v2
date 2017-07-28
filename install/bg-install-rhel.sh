@@ -328,6 +328,10 @@ echo "VERSION='0.1.0'" >> $BGPANEL/conf/bgpanel.conf
 wget https://raw.githubusercontent.com/BGPanel/BGPanel-v2/master/func/main.sh -O $BGPANEL/func/main.sh
 wget https://raw.githubusercontent.com/BGPanel/BGPanel-v2/master/bin/bg-generate-cert -O $BGPANEL/bin/bg-generate-cert
 
+#allow downloaded scripts to execute 
+chmod +x $BGPANEL/func/main.sh
+chmod +x $BGPANEL/bin/bg-generate-cert
+
 # Generating SSL certificate
 $BGPANEL/bin/bg-generate-cert $(hostname) $email 'US' 'Michigan' \
      'Sterling Heights' 'Bright Game Panel' 'IT' > /tmp/bgp.pem
