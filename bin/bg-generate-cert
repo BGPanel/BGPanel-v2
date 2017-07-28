@@ -25,6 +25,7 @@ KEY_SIZE=4096
 DAYS=365
 
 # Includes
+source $BGPANEL/func/main.sh
 source $BGPANEL/conf/bgpanel.conf
 
 # Json function
