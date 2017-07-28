@@ -28,7 +28,7 @@ make
 make install INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 install -p -D -m 0755 %{SOURCE1} %{buildroot}/usr/local/bgpanel/php/lib/
 %{__install} -p -D -m 0755 %{SOURCE2} %{buildroot}/usr/local/bgpanel/php/etc/
-%{__install} -p -D -m 0755  %{buildroot}/usr/local/bgpanel/php/sbin/php-fpm %{buildroot}/usr/local/vesta/php/sbin/vesta-php
+%{__install} -p -D -m 0755  %{buildroot}/usr/local/bgpanel/php/sbin/php-fpm %{buildroot}/usr/local/bgpanel/php/sbin/bgpanel-php
 
 
 rm -rf $RPM_BUILD_ROOT/.channels
