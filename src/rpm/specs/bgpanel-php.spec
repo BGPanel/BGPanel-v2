@@ -20,7 +20,7 @@ This package contains php-cgi for Bright Game Panel web interface.
 %setup -q -n %{name}-%{version}
 
 %build
-./configure --prefix=/usr/local/bgpanel/php --with-zlib --enable-fpm --with-fpm-user=admin --with-fpm-group=admin --with-mysql --with-mysqli --with-curl --enable-mbstring
+./configure --prefix=/usr/local/bgpanel/php --with-zlib --enable-fpm --with-fpm-user=bgpanel --with-fpm-group=bgpanel --with-mysql --with-mysqli --with-curl --enable-mbstring
 
 make
 
