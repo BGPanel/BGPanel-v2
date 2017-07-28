@@ -165,11 +165,11 @@ echo -e "\n\n"
 
 echo "The following software will be installed on your system:"
 
-if [ "$proftpd" == 'yes']; then
+if [ "$proftpd" == 'yes' ]; then
 	echo '   - ProFTPD FTP Server'
 fi
 
-if [ "$mariadb" == 'yes']; then
+if [ "$mariadb" == 'yes' ]; then
 	echo '   - MariaDB Database Server'
 fi
 
