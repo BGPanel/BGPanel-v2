@@ -1,0 +1,101 @@
+#!/bin/sh
+#
+#   nginx
+#   php-fpm
+#
+# chkconfig:   - 85 15
+# description:  Run BGPanel web server
+# processname: bgpanel
+. /etc/rc.d/init.d/functions
+
+# BGPanel PATH
+. /etc/profile.d/bgpanel.sh
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "$NETWORKING" = "no" ] && exit 0
+
+nginx="/usr/local/bgpanel/nginx/sbin/bgpanel-nginx"
+nignx_conf="/usr/local/bgpanel/nginx/conf/nginx.conf"
+php="/usr/local/bgpanel/php/sbin/bgpanel-php"
+php_conf="/usr/local/bgpanel/php/etc/php-fpm.conf"
+
+bgpanel_user=bgpanel
+bgpanel_group=bgpanel
+
+start() {
+    [ -x $nginx ] || exit 5
+    [ -f $nignx_conf ] || exit 6
+    [ -x $php ] || exit 1
+    [ -f $php_conf ] || exit 2
+
+    echo -n $"Starting bgpanel-nginx: "
+    daemon $nginx
+    retval=$?
+    echo
+    [[ $retval -ne 0 ]] && exit $retval
+
+    echo -n $"Starting bgpanel-php: "
+    daemon $php
+    echo
+    return $retval
+}
+
+stop() {
+    echo -n $"Stopping bgpanel-nginx: "
+    killproc -p /var/run/bgpanel-nginx.pid bgpanel-nginx -QUIT
+    retval=$?
+    echo
+    [ -f ${pidfile} ] && /bin/rm -f ${pidfile}
+    [[ $retval -ne 0 ]] && exit $retval
+
+    echo -n $"Stopping bgpanel-php: "
+    killproc -p /var/run/bgpanel-php.pid bgpanel-php -QUIT
+    retval=$?
+    echo
+    [ -f /var/run/bgpanel-php.pid ] && /bin/rm -f /var/run/bgpanel-php.pid
+    [ -f /var/run/bgpanel-php.sock ] && /bin/rm -f /var/run/bgpanel-php.sock
+    return $retval
+}
+
+restart(){
+    stop
+    start
+}
+
+reload() {
+    echo -n $"Reloading bgpanel-nginx: "
+    killproc -p /var/run/bgpanel-nginx.pid bgpanel-nginx -USR2
+    retval=$?
+    echo
+    [[ $retval -ne 0 ]] && exit $retval
+	
+    echo -n $"Reloading bgpanel-php: "
+    killproc -p /var/run/bgpanel-php.pid bgpanel-php -USR2
+    retval=$?
+    echo
+    return $retval
+}
+
+rh_status(){
+    status -p /var/run/bgpanel-nginx.pid bgpanel-nginx
+    status -p /var/run/bgpanel-php.pid bgpanel-php
+}
+
+case "$1" in
+    start)
+        start;;
+    stop)
+        stop;;
+    restart)
+        restart;;
+    reload)
+        reload;;
+    status)
+        rh_status;;
+    *)
+        echo $"Usage: $0 {start|stop|restart|reload|status}"
+        exit 3
+esac
